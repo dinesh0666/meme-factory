@@ -39,11 +39,13 @@ class App extends React.Component {
   }
 
 
+
+
   openImage = (index) => {
     const image = this.state.photos[index];
-    const base_image = document.createElement(image.src);
-    base_image.src = image.src;
-    const base64 = this.getBase64Image(base_image);
+    // const base_image = document.createElement(image.url);
+    // base_image.src = image.src;
+    const base64 = this.getBase64Image(image.url);
     this.setState(prevState => ({
       currentImage: index,
       modalIsOpen: !prevState.modalIsOpen,
@@ -140,6 +142,10 @@ class App extends React.Component {
 
   getBase64Image(img) {
     var canvas = document.createElement("canvas");
+   var img =  document.createElement("IMG");
+   img.setAttribute("src", img);
+   img.setAttribute("width", "100%");
+   img.setAttribute("height", "100%");
     canvas.width = img.width;
     canvas.height = img.height;
     var ctx = canvas.getContext("2d");
@@ -150,10 +156,10 @@ class App extends React.Component {
 
   render() {
     const image = this.state.photos && this.state.photos.length > 0 &&  this.state.photos[this.state.currentImage];
-    const base_image = document.createElement(image.src);
-    base_image.src = image.src;
-    var wrh = base_image.width / base_image.height;
-    //var wrh = 100;
+    // const base_image = document.createElement(image.url);
+    // base_image.src = image.src;
+    //var wrh = base_image.width / base_image.height;
+    var wrh = 600;
     var newWidth = 600;
     var newHeight = newWidth / wrh;
     const textStyle = {
@@ -169,7 +175,7 @@ class App extends React.Component {
       <div>
         <div className="main-content">
           <div className="sidebar">
-            <NavbarBrand href="/">Make-a-Meme</NavbarBrand>
+            <NavbarBrand href="/">Meme Factory</NavbarBrand>
             <p>
               This is a fun project inspired by imgur. Built with React.
             </p>
@@ -188,7 +194,7 @@ class App extends React.Component {
                     height: "100%"
                   }}
                   alt={index}
-                  src={image.src}
+                  src={image.url}
                   onClick={() => this.openImage(index)}
                   role="presentation"
                 />
