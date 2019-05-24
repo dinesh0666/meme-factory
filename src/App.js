@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, FormGroup, Label, NavbarBrand } from 'reactstrap';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const initialState = {
   toptext: "",
@@ -52,6 +53,7 @@ class App extends React.Component {
     });
   }
 
+
   toggle = () => {
     this.setState(prevState => ({
       modalIsOpen: !prevState.modalIsOpen
@@ -60,12 +62,14 @@ class App extends React.Component {
     });
   }
 
+
   changeText = (event) => {
     this.setState({
       [event.currentTarget.name]: event.currentTarget.value
     });
   }
 
+  
   getStateObj = (e, type) => {
     let rect = this.imageRef.getBoundingClientRect();
     const xOffset = e.clientX - rect.left;
