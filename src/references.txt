@@ -3,3 +3,5 @@ references
 2.https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer/serializeToString
 3.https://api.imgflip.com/get_memes
 4.https://stackoverflow.com/questions/22172604/convert-image-url-to-base64
+5.https://stackoverflow.com/questions/27230293/how-to-convert-svg-to-png-using-html5-canvas-javascript-jquery-and-save-on-serve
+6.https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
