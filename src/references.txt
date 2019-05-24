@@ -1,0 +1,5 @@
+references
+1.https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dominant-baseline
+2.https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer/serializeToString
+3.https://api.imgflip.com/get_memes
+4.https://stackoverflow.com/questions/22172604/convert-image-url-to-base64

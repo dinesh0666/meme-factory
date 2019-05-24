@@ -153,39 +153,37 @@ class App extends React.Component {
         reader.readAsDataURL(blob);
       });
       return dataUrl;
-      // now do something with `dataUrl`
   })();
   }
 
   render() {
     if(this.state.photos.length > 0){
-      const image = this.state.photos[this.state.currentImage];
-      const base_image = new Image();
-      base_image.src = image.url;
-      console.log(base_image);
+      var image = this.state.photos[this.state.currentImage];
+      var base_image = new Image();
+      base_image.src = image && image.url;
       var wrh = base_image.width / base_image.height;
       var newWidth = 600;
       var newHeight = newWidth / wrh;
-    }
-    const textStyle = {
-      fontFamily: "Impact",
-      fontSize: "50px",
-      textTransform: "uppercase",
-      fill: "#FFF",
-      stroke: "#000",
-      userSelect: "none"
+      var textStyle = {
+        fontFamily: "Impact",
+        fontSize: "50px",
+        textTransform: "uppercase",
+        fill: "#FFF",
+        stroke: "#000",
+        userSelect: "none"
+      }
     }
     return (
       <div>
         <div className="main-content">
           <div className="sidebar">
-            <NavbarBrand href="/">Meme Factory</NavbarBrand>
-            <p>
+            <NavbarBrand href="/"><h1>Meme Factory</h1></NavbarBrand>
+            <h3>
               This is a fun project for creating memes. Built with React.
-            </p>
-            <p>
-              You can add top and bottom text to a meme-template, move the text around and can save the image by downloading it.
-            </p>
+            </h3>
+            <h3>
+              Here is the List of Meme`s Avaliable to Edit
+            </h3>
           </div>
           <div className="content">
             {this.state.photos && this.state.photos.map((image, index) => (
@@ -207,20 +205,20 @@ class App extends React.Component {
           </div>
         </div>
         <Modal className="meme-gen-modal" isOpen={this.state.modalIsOpen}>
-          <ModalHeader toggle={this.toggle}>Make-a-Meme</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Create a Meme</ModalHeader>
           <ModalBody>
             <svg
-              width={newWidth}
+              width={"100%"}
               id="svg_ref"
-              height={newHeight}
+              height={"100%"}
               ref={el => { this.svgRef = el }}
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink">
               <image
                 ref={el => { this.imageRef = el }}
                 xlinkHref={this.state.currentImagebase64}
-                height={newHeight}
-                width={newWidth}
+                height={"100%"}
+                width={"100%"}
               />
               <text
                 style={{ ...textStyle, zIndex: this.state.isTopDragging ? 4 : 1 }}
