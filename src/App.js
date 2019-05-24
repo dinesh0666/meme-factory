@@ -25,39 +25,39 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount(){ 
+  //getting memes
+  this.getMemes()
+  }
 
+  getMemes = () => {
     axios.get(`https://api.imgflip.com/get_memes`)
       .then(res => {
-        console.log(res)
         if(res.status === 200){
           const photos = res.data.data.memes;
           this.setState({ photos });
         }
       })
-
   }
-
-
-
 
   openImage = (index) => {
     const image = this.state.photos[index];
-    // const base_image = document.createElement(image.url);
-    // base_image.src = image.src;
-    const base64 = this.getBase64Image(image.url);
-    this.setState(prevState => ({
-      currentImage: index,
-      modalIsOpen: !prevState.modalIsOpen,
-      currentImagebase64: base64,
-      ...initialState
-    }));
+    this.getBase64Image(image.url).then(base64=>{
+      this.setState(prevState => ({
+        currentImage: index,
+        modalIsOpen: !prevState.modalIsOpen,
+        currentImagebase64: base64,
+        ...initialState
+      }));
+    });
   }
 
   toggle = () => {
     this.setState(prevState => ({
       modalIsOpen: !prevState.modalIsOpen
-    }));
+    }),()=>{
+      this.getMemes();
+    });
   }
 
   changeText = (event) => {
@@ -141,27 +141,28 @@ class App extends React.Component {
   }
 
   getBase64Image(img) {
-    var canvas = document.createElement("canvas");
-   var img =  document.createElement("IMG");
-   img.setAttribute("src", img);
-   img.setAttribute("width", "100%");
-   img.setAttribute("height", "100%");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    return dataURL;
+   return (async function() {
+      let blob = await fetch(img).then(r => r.blob());
+      let dataUrl = await new Promise(resolve => {
+        let reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+      return dataUrl;
+      // now do something with `dataUrl`
+  })();
   }
 
   render() {
-    const image = this.state.photos && this.state.photos.length > 0 &&  this.state.photos[this.state.currentImage];
-    // const base_image = document.createElement(image.url);
-    // base_image.src = image.src;
-    //var wrh = base_image.width / base_image.height;
-    var wrh = 600;
-    var newWidth = 600;
-    var newHeight = newWidth / wrh;
+    if(this.state.photos.length > 0){
+      const image = this.state.photos[this.state.currentImage];
+      const base_image = new Image();
+      base_image.src = image.url;
+      console.log(base_image);
+      var wrh = base_image.width / base_image.height;
+      var newWidth = 600;
+      var newHeight = newWidth / wrh;
+    }
     const textStyle = {
       fontFamily: "Impact",
       fontSize: "50px",
@@ -170,14 +171,13 @@ class App extends React.Component {
       stroke: "#000",
       userSelect: "none"
     }
-
     return (
       <div>
         <div className="main-content">
           <div className="sidebar">
             <NavbarBrand href="/">Meme Factory</NavbarBrand>
             <p>
-              This is a fun project inspired by imgur. Built with React.
+              This is a fun project for creating memes. Built with React.
             </p>
             <p>
               You can add top and bottom text to a meme-template, move the text around and can save the image by downloading it.
@@ -196,7 +196,6 @@ class App extends React.Component {
                   alt={index}
                   src={image.url}
                   onClick={() => this.openImage(index)}
-                  role="presentation"
                 />
               <span className="meme-bottom-caption">Bottom text</span>
               </div>
