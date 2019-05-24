@@ -244,7 +244,7 @@ class App extends React.Component {
                 <Label for="bottomtext">Bottom Text</Label>
                 <input className="form-control" type="text" name="bottomtext" id="bottomtext" placeholder="Add text to the bottom" onChange={this.changeText} />
               </FormGroup>
-              <button onClick={() => this.convertSvgToImage()} className="btn btn-primary">Download Meme!</button>
+              <button onClick={() => this.convertSvgToImage()} className="btn btn-primary">Meme It!</button>
             </div>
           </ModalBody>
         </Modal>
