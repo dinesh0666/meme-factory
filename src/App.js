@@ -69,7 +69,7 @@ class App extends React.Component {
     });
   }
 
-  
+
   getStateObj = (e, type) => {
     let rect = this.imageRef.getBoundingClientRect();
     const xOffset = e.clientX - rect.left;
@@ -262,5 +262,4 @@ class App extends React.Component {
     )
   }
 }
-
 export default App;
