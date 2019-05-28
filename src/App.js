@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, ModalHeader, ModalBody, FormGroup, Label, NavbarBrand } from 'reactstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import UploadImage from './UploadImage';
 const initialState = {
   toptext: "",
   bottomtext: "",
@@ -19,7 +19,9 @@ class App extends React.Component {
     this.state = {
       currentImage: 0,
       modalIsOpen: false,
+      ownImage:false,
       currentImagebase64: null,
+      file:'',
       ...initialState
     };
   }
@@ -44,6 +46,7 @@ class App extends React.Component {
     this.getBase64Image(image.url).then(base64=>{
       this.setState(prevState => ({
         currentImage: index,
+        ownImage:false,
         modalIsOpen: !prevState.modalIsOpen,
         currentImagebase64: base64,
         ...initialState
@@ -66,8 +69,35 @@ class App extends React.Component {
       [event.currentTarget.name]: event.currentTarget.value
     });
   }
+  /**Get the uploaded Image  
+    * and append it in base 64 
+    */
+   handleImageChange=(e)=>{
+    e.preventDefault();
+        this.setState({
+         file: e.target.files[0],
+        });
+  }
+  //function to handle image cropper
+  onSubmit = (e) => {
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = this.state.file;
+  
+    if (file.size > 2097152) {  
+    return true;
+    };
+    reader.onloadend = () => {
+    this.setState({
+    file: file,
+    currentImagebase64: reader.result,
+    ownImage:false
+    });
+    }
+        reader.readAsDataURL(file)
+    }
 
- 
+
   convertSvgToImage = () => {
     const svg = this.svgRef;
     let svgData = new XMLSerializer().serializeToString(svg);
@@ -100,7 +130,19 @@ class App extends React.Component {
       return dataUrl;
   })();
   }
-
+/** when click Upload own image 
+ * Pop-up modal would open
+ */
+  uploadOwnImage=()=>{
+    this.setState({
+      currentImagebase64: null,
+      modalIsOpen:true,
+      ownImage:true,
+      toptext: "",
+      bottomtext: ""      
+    })
+  }
+  
   render() {
     var textStyle = {
       fontFamily: "Impact",
@@ -121,6 +163,7 @@ class App extends React.Component {
             <h3>
               Here is the List of Meme`s Avaliable to Edit
             </h3>
+            <button onClick={()=>this.uploadOwnImage()}>upload your OWN</button>
           </div>
           <div className="content">
             {this.state.photos && this.state.photos.map((image, index) => (
@@ -144,6 +187,8 @@ class App extends React.Component {
         <Modal className="meme-gen-modal" isOpen={this.state.modalIsOpen}>
           <ModalHeader toggle={this.toggle}>Create a Meme</ModalHeader>
           <ModalBody>
+         { this.state.ownImage &&
+          <UploadImage onSubmit={(e)=>this.onSubmit(e)} handleImageChange={(e)=>this.handleImageChange(e)}/> } 
             <svg
               width={"600px"}
               id="svg_ref"
