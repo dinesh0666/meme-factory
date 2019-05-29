@@ -4,13 +4,8 @@ import React, { Component } from 'react';
 class UploadImage extends Component{
     constructor(props){
         super(props);
-        // this.state = {file:'',imagePreviewUrl:''}
+        
     }
-
-  
-
-
-
 
     render(){
         return <>        
@@ -19,8 +14,7 @@ class UploadImage extends Component{
                 <input type="file" name="myImage" onChange= {(e)=>this.props.handleImageChange(e)} />
                 <button type="submit">Upload</button>
             </form>
-        
-        {/* <img src={this.state.imagePreviewUrl} ></img> */}
+                
         </>
 
     }
