@@ -23,6 +23,39 @@
   color: #61dafb;
 }
 
+.ownUploadButton{
+  background-color: #008CBA; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;  
+  border-radius: 8px;
+}
+.ownUploadButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.uploadImage{
+  background-color: #008CBA; /* Green */
+  border: none;
+  color: white;
+  padding: 7px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;  
+  border-radius: 8px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -31,3 +64,4 @@
     transform: rotate(360deg);
   }
 }
+ 
