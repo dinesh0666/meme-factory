@@ -164,7 +164,7 @@ class App extends React.Component {
             <h3>
               Here is the List of Meme`s Avaliable to Edit
             </h3>
-            <button className="ownUploadButton" onClick={()=>this.uploadOwnImage()}>upload your OWN</button>
+            <button className="ownUploadButton" onClick={()=>this.uploadOwnImage()}>Create Your Own</button>
           </div>
           <div className="content">
             {this.state.photos && this.state.photos.map((image, index) => (
