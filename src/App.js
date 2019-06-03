@@ -7,6 +7,8 @@ import './App.css';
 const initialState = {
   toptext: "",
   bottomtext: "",
+  isTopDragging: false,
+  isBottomDragging: false,
   topY: "10%",
   topX: "50%",
   bottomX: "50%",
@@ -70,6 +72,62 @@ class App extends React.Component {
       [event.currentTarget.name]: event.currentTarget.value
     });
   }
+
+  getStateObj = (e, type) => {
+    let rect = this.imageRef.getBoundingClientRect();
+    const xOffset = e.clientX - rect.left;
+    const yOffset = e.clientY - rect.top;
+    let stateObj = {};
+    if (type === "bottom") {
+      stateObj = {
+        isBottomDragging: true,
+        isTopDragging: false,
+        bottomX: `${xOffset}px`,
+        bottomY: `${yOffset}px`
+      }
+    } else if (type === "top") {
+      stateObj = {
+        isTopDragging: true,
+        isBottomDragging: false,
+        topX: `${xOffset}px`,
+        topY: `${yOffset}px`
+      }
+    }
+    return stateObj;
+  }
+
+  handleMouseDown = (e, type) => {
+    const stateObj = this.getStateObj(e, type);
+    document.addEventListener('mousemove', (event) => this.handleMouseMove(event, type));
+    this.setState({
+      ...stateObj
+    })
+  }
+
+  handleMouseMove = (e, type) => {
+    if (this.state.isTopDragging || this.state.isBottomDragging) {
+      let stateObj = {};
+      if (type === "bottom" && this.state.isBottomDragging) {
+        stateObj = this.getStateObj(e, type);
+      } else if (type === "top" && this.state.isTopDragging){
+        stateObj = this.getStateObj(e, type);
+      }
+      this.setState({
+        ...stateObj
+      });
+    }
+  };
+
+  handleMouseUp = (event) => {
+    document.removeEventListener('mousemove', this.handleMouseMove);
+    this.setState({
+      isTopDragging: false,
+      isBottomDragging: false
+    });
+  }
+
+
+
   /**Get the uploaded Image  
     * and append it in base 64 
     */
@@ -84,10 +142,6 @@ class App extends React.Component {
     e.preventDefault();
     let reader = new FileReader();
     let file = this.state.file;
-  
-    if (file.size > 2097152) {  
-    return true;
-    };
     reader.onloadend = () => {
     this.setState({
     file: file,
@@ -203,12 +257,14 @@ class App extends React.Component {
                 height={"600px"}
                 width={"600px"}
               />
-              <text
-                style={{ ...textStyle, zIndex:4 }}
+             <text
+                style={{ ...textStyle, zIndex: this.state.isTopDragging ? 4 : 1 }}
                 x={this.state.topX}
                 y={this.state.topY}
                 dominantBaseline="middle"
                 textAnchor="middle"
+                onMouseDown={event => this.handleMouseDown(event, 'top')}
+                onMouseUp={event => this.handleMouseUp(event, 'top')}
               >
                   {this.state.toptext}
               </text>
@@ -218,6 +274,8 @@ class App extends React.Component {
                 textAnchor="middle"
                 x={this.state.bottomX}
                 y={this.state.bottomY}
+                onMouseDown={event => this.handleMouseDown(event, 'bottom')}
+                onMouseUp={event => this.handleMouseUp(event, 'bottom')}
               >
                   {this.state.bottomtext}
               </text>
